@@ -5,20 +5,21 @@ import TodoList from './components/TodoList'
 import type { Todo } from './TodoTypes'
 
 function App() {
-  // 入力欄の文字を記憶する(初期値は空っぽ)
-  const [inputText, setInputText] = useState<string>("")
+  const [inputText, setInputText] = useState("") // 入力欄の文字を記憶する(初期値は空文字)
+  const [inputDate, setInputDate] = useState("") // 入力欄の日付を記憶する(初期値は空文字)
 
   // タスクの一覧を一時保持する(初期値は2つのタスクが入った配列)
   const [todos, setTodos] = useState<Todo[]>(
     [
-      {id: 1, text: "テスト1テスト1テスト1", isCompleted: false},
-      {id: 2, text: "テスト2テスト2テスト2", isCompleted: false}
+      {id: 19384703, text: "テスト1テスト1テスト1", isCompleted: false, deadline: "", createdAt: "2026-06-01"},
+      {id: 93787430, text: "テスト2テスト2テスト2", isCompleted: false, deadline: "", createdAt: "2026-06-02"}
     ]
   )
 
-  // 入力欄に文字が入力されたとき
+  // inputタグに値が入力されたとき
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setInputText(e.target.value)
+    const {name, value } = e.target;
+    name === 'todo-date' ? setInputDate(value) : setInputText(value)
   }
 
   // ｢追加｣ボタンがクリックされたとき
@@ -38,13 +39,15 @@ function App() {
     const newTodo: Todo = {
       id: generateUniqueId(todos),
       text: inputText,
-      isCompleted: false
+      isCompleted: false,
+      deadline: inputDate,
+      createdAt: new Date().toISOString()
     }
 
     // タスク一覧のステート更新関数を使って新しいタスクをセットし、入力欄のステートを空にする
     setTodos([...todos, newTodo])
-    debugger;
     setInputText("")
+    setInputDate("")
   }
 
   // チェックボックスにチェックが入ったとき
@@ -74,7 +77,7 @@ function App() {
       <h1>My Todo List</h1>
 
       {/* タスク入力エリア */}
-      <TodoInput inputText={inputText} onInputChange={handleInputChange} onAddTodo={handleAddTodo}/>
+      <TodoInput inputText={inputText} inputDate={inputDate} onInputChange={handleInputChange} onAddTodo={handleAddTodo}/>
       {/* タスク一覧エリア */}
       <TodoList todos={todos} onDeleteTodo={handleDeleteTodo} oncheckedTodo={handleToggleTodo}/>
     </div>

@@ -8,21 +8,37 @@ interface TodoListProps {
 }
 
 function TodoList({ todos, onDeleteTodo, oncheckedTodo }: TodoListProps) {
-  const handleDeleteTodo = onDeleteTodo;
-  const handleToggleTodo = oncheckedTodo;
+  // 日付ごとにTodoリストを整形していく
+  const dateTodos: {[key: string]: Todo[]} = {};
+  todos.forEach(t => {
+    const dateKey = t.deadline ? t.deadline : "日付指定なし"
+    if (!dateTodos[dateKey]) {
+      dateTodos[dateKey] = [];
+    }
+
+    dateTodos[dateKey].push(t);
+  })
 
   return (
-    <ul className="todo-list">
-      {todos.map(t => (
-        <li key={t.id} className="todo-list__item">
-          <label htmlFor="">
-            <input type="checkbox" className="todo-list__checkbox" checked={t.isCompleted} onChange={() => handleToggleTodo(t.id)} name="" id="" />
-            <span className={`todo-list__text${t.isCompleted ? ' --completed' : ''}`}>{t.text}</span>
-          </label>
-          <button className="todo-list__delete-btn" onClick={() => handleDeleteTodo(t.id)}>削除</button>
-        </li>
+    <div className="todo-list-wrap">
+      {Object.keys(dateTodos).map(date => (
+        <div className="todo-list" key={date}>
+          <h2 className="todo-list__date">{date}</h2>
+
+        <ul className="todo-list__content">
+          {dateTodos[date].map((t, i) => (
+            <li key={t.id} className="todo-list__item todo-item">
+              <label htmlFor="">
+                <input type="checkbox" className="todo-item__checkbox" checked={t.isCompleted} onChange={() => oncheckedTodo(t.id)} name="" id={`${date}_${i}`} />
+                <span className={`todo-item__text${t.isCompleted ? ' --completed' : ''}`}>{t.text}</span>
+              </label>
+              <button className="todo-item__delete-btn" onClick={() => onDeleteTodo(t.id)}>削除</button>
+            </li>
+          ))}
+        </ul>
+        </div>
       ))}
-    </ul>
+    </div>
   )
 }
 
