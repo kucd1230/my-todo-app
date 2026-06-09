@@ -1,13 +1,10 @@
 import { useState, ChangeEvent } from 'react' // useStateは画面上で変化するデータを一時的に記憶しておく関数
 import './App.css'
+import TodoInput from './components/TodoInput'
+import TodoList from './components/TodoList'
+import type { Todo } from './TodoTypes'
 
-// タスク1つの型を定義する
-interface Todo {
-  id: number;
-  text: string;
-}
-
-function app() {
+function App() {
   // 入力欄の文字を記憶する(初期値は空っぽ)
   const [inputText, setInputText] = useState<string>("")
 
@@ -19,7 +16,7 @@ function app() {
     ]
   )
 
-  // 入力欄に文字が入力されたとき
+  // 入力欄に文字が入力されたときd
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     setInputText(e.target.value)
   }
@@ -49,24 +46,11 @@ function app() {
       <h1>My Todo List</h1>
 
       {/* タスク入力エリア */}
-      <div>
-        <input type="text" placeholder="新しいタスクを入力" value={inputText} onChange={handleInputChange}/>
-        <button onClick={handleAddTodo}>追加</button>
-      </div>
-
+      <TodoInput inputText={inputText} onInputChange={handleInputChange} onAddTodo={handleAddTodo}/>
       {/* タスク一覧エリア */}
-      <div>
-        <ul>
-          {todos.map(t => (
-            <li key={t.id}>
-              <span>{t.text}</span>
-              <button onClick={() => handleDeleteTodo(t.id)}>削除</button>
-            </li>
-          ))}
-        </ul>
-      </div>
+      <TodoList todos={todos} onDeleteTodo={handleDeleteTodo}/>
     </div>
   )
 }
 
-export default app
+export default App
