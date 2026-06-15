@@ -1,0 +1,230 @@
+@use './styles/variables' as *;
+
+.l-wrap {
+  height: 100svh;
+}
+
+.l-header {
+  padding: 15px;
+  border-bottom: 1px solid $color-black;
+}
+
+.l-contents {
+  padding-block: 10px;
+}
+
+.g-header {
+  &__ttl {
+    font-size: 1.4rem;
+  }
+}
+
+.todo-list {
+  &__date {
+    font-size: 1.2rem;
+    font-weight: 700;
+    background: $color-black;
+    color: $color-white;
+    text-align: left;
+    padding: 5px 10px;
+  }
+
+  &__content {
+    padding: 10px;
+  }
+
+  &__item {
+    &:not(:last-child) {
+      margin-bottom: 12px;
+    }
+  }
+}
+
+.todo-item {
+  display: flex;
+  align-items: center;
+
+  &__checkbox {
+    position: relative;
+    width: 18px;
+    height: 18px;
+    appearance: none;
+    background: #FFFFFF;
+    border: solid 2px #808080;
+    border-radius: 2px;
+    box-shadow: 0 0 0 0 transparent;
+    margin-right: 5px;
+
+    &:checked::after {
+      content: "";
+      position: absolute;
+      top: 3px;
+      left: 2.5px;
+      width: 10px;
+      height: 6px;
+      border-bottom: 3px solid #808080;
+      border-left: 3px solid #808080;
+      transform: rotate(-45deg);
+    }
+  }
+
+  &__text {
+    font-size: 1.8rem;
+    flex: 1;
+    line-height: 1.2;
+    margin-right: 15px;
+
+    &.--completed {
+      text-decoration: line-through;
+    }
+  }
+}
+
+.todo-add-wrap {
+  z-index: 1000;
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(calc(100% - 40px), 640px);
+  background: #adadad;
+  padding: 60px 20px 30px;
+}
+
+.todo-add-close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: $color-black;
+  cursor: pointer;
+
+  &::before,
+  &::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 20px;
+    height: 2px;
+    background: currentColor;
+  }
+
+  &::before {
+    transform: translate(-50%, -50%) rotate(45deg);
+  }
+
+  &::after {
+    transform: translate(-50%, -50%) rotate(-45deg);
+  }
+}
+
+.todo-add {
+  &__date {
+    display: block;
+    position: relative;
+    font-size: 1.4rem;
+    padding: 5px;
+    border: 1px solid #ccc;
+    width: 120px;
+    font-family: inherit;
+    background: #ffffff;
+    cursor: pointer;
+    margin-bottom: 10px;
+
+    &::-webkit-datetime-edit {
+      color: #ffffff; 
+    }
+
+    &:focus::-webkit-datetime-edit,
+    &:not([value=""])::-webkit-datetime-edit {
+      color: #333333;
+    }
+
+    &[value=""]::before {
+      content: "期日を設定"; 
+      position: absolute;
+      left: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #999999;
+      pointer-events: none;
+    }
+
+    &::-webkit-calendar-picker-indicator {
+      cursor: pointer;
+      position: relative;
+      z-index: 1;
+    }
+
+    &::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  &__text {
+    font-size: 1.8rem;
+    width: 100%;
+    border-bottom: 2px solid $color-black;
+    padding: 5px;
+    margin-bottom: 10px;
+  }
+
+  &__btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.4rem;
+    width: 200px;
+    height: 40px;
+    background: $color-black;
+    color: $color-white;
+    border-radius: 40px;
+    margin: 0 auto;
+  }
+}
+
+.todo-add-btn {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  background: $color-white;
+  border: 3px solid $color-black;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 50;
+
+  // プラスアイコン - 共通スタイル
+  &::before,
+  &::after {
+    content: "";
+    position: absolute;
+    background: $color-black;
+  }
+
+  // 横線
+  &::before {
+    width: 30px;
+    height: 3px;
+  }
+
+  // 縦線
+  &::after {
+    width: 3px;
+    height: 30px;
+  }
+}

@@ -1,5 +1,5 @@
 import { useState, ChangeEvent } from 'react' // useStateは画面上で変化するデータを一時的に記憶しておく関数
-import type { Todo } from './TodoTypes'
+import type { Todo } from '../TodoTypes'
 
 export function useTodos() {
   const [inputText, setInputText] = useState("") // 入力欄の文字を記憶する(初期値は空文字)

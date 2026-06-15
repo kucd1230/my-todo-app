@@ -28,10 +28,8 @@ function TodoList({ todos, onDeleteTodo, oncheckedTodo }: TodoListProps) {
         <ul className="todo-list__content">
           {dateTodos[date].map((t, i) => (
             <li key={t.id} className="todo-list__item todo-item">
-              <label htmlFor="">
-                <input type="checkbox" className="todo-item__checkbox" checked={t.isCompleted} onChange={() => oncheckedTodo(t.id)} name="" id={`${date}_${i}`} />
-                <span className={`todo-item__text${t.isCompleted ? ' --completed' : ''}`}>{t.text}</span>
-              </label>
+              <input type="checkbox" className="todo-item__checkbox" checked={t.isCompleted} onChange={() => oncheckedTodo(t.id)} name="" id={`${date}_${i}`} />
+              <span className={`todo-item__text${t.isCompleted ? ' --completed' : ''}`}>{t.text}</span>
               <button className="todo-item__delete-btn" onClick={() => onDeleteTodo(t.id)}>削除</button>
             </li>
           ))}
