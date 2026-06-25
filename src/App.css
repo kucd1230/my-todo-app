@@ -8,12 +8,19 @@
   border-bottom: 1px solid #292929;
 }
 
-.l-contents {
-  padding-block: 10px;
-}
-
 .g-header__ttl {
   font-size: 1.4rem;
+}
+
+.todo-page-tabs {
+  display: flex;
+  gap: 10px;
+  padding-block: 10px;
+}
+.todo-page-tabs__item {
+  width: 50%;
+  font-size: 1.8rem;
+  text-align: center;
 }
 
 .todo-list__date {

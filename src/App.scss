@@ -10,12 +10,23 @@
 }
 
 .l-contents {
-  padding-block: 10px;
 }
 
 .g-header {
   &__ttl {
     font-size: 1.4rem;
+  }
+}
+
+.todo-page-tabs {
+  display: flex;
+  gap: 10px;
+  padding-block: 10px;
+
+  &__item {
+    width: 50%;
+    font-size:1.8rem;
+    text-align: center;
   }
 }
 

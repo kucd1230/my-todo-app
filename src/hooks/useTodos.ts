@@ -1,26 +1,30 @@
-import { useState, ChangeEvent } from 'react' // useStateは画面上で変化するデータを一時的に記憶しておく関数
+import { useState, useEffect } from 'react' // useStateは画面上で変化するデータを一時的に記憶しておく関数
+import type { ChangeEvent } from 'react'
 import type { Todo } from '../TodoTypes'
 
-export function useTodos() {
+const LOCAL_STORAGE_KEY = 'my-todo-app-todos'
+
+export default function useTodos() {
   const [inputText, setInputText] = useState("") // 入力欄の文字を記憶する(初期値は空文字)
   const [inputDate, setInputDate] = useState("") // 入力欄の日付を記憶する(初期値は空文字)
+  const [todos, setTodos] = useState<Todo[]>(() => {
+    // 初期値としてlocalStorageからタスクを取得する、localstorageに保存されているタスクがない場合は空配列を返す
+    if (typeof window === 'undefined') { return [] }
 
-  // タスクの一覧を一時保持する(初期値は2つのタスクが入った配列)
-  const [todos, setTodos] = useState<Todo[]>(
-    [
-      {id: 19384703, text: "テスト1テスト1テスト1", isCompleted: false, deadline: "", createdAt: "2026-06-01"},
-      {id: 93787430, text: "テスト2テスト2テスト2", isCompleted: false, deadline: "", createdAt: "2026-06-02"}
-    ]
-  )
+    const savedTodos = localStorage.getItem(LOCAL_STORAGE_KEY)
+    if (savedTodos === null) { return []}
 
-  // 8桁の一意となるIdを作成する
-  const generateUniqueId = (currentTodos: Todo[]): number => {
-    while (true) {
-      const randomId = Math.floor(10000000 + Math.random() * 90000000);
-      const isUnique = currentTodos.some(t => t.id === randomId) ? false : true; // randomIdが既に存在していないかの確認
-      if (isUnique) return randomId;
+    try {
+      return JSON.parse(savedTodos) as Todo[]
+    } catch {
+      return []
     }
-  }
+  })
+
+  // Todoの状態が変化するたびにlocalStorageに保存する
+  useEffect(() => {
+    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(todos))
+  }, [todos])
 
   // input枠にテキストが入力されたとき
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -78,5 +82,13 @@ export function useTodos() {
     handleAddTodo,
     handleToggleTodo,
     handleDeleteTodo
+  }
+}
+
+const generateUniqueId = (currentTodos: Todo[]): number => {
+  while (true) {
+    const randomId = Math.floor(10000000 + Math.random() * 90000000);
+    const isUnique = currentTodos.some(t => t.id === randomId) ? false : true; // randomIdが既に存在していないかの確認
+    if (isUnique) return randomId;
   }
 }
